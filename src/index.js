@@ -6,7 +6,7 @@ import {
   CHECKABLE_LIST_ITEM,
 } from "draft-js-checkable-list-item";
 
-import { Map, OrderedSet, is } from "immutable";
+import { OrderedSet, is } from "immutable";
 import CodeBlock from "./components/Code";
 import {
   getDefaultKeyBinding,
@@ -230,12 +230,7 @@ const createMarkdownPlugin = (_config = {}) => {
 
   return {
     store,
-    blockRenderMap: Map({
-      "code-block": {
-        element: "code",
-        wrapper: <pre spellCheck="false" />,
-      },
-    }).merge(checkboxBlockRenderMap),
+    blockRenderMap: checkboxBlockRenderMap,
     decorators: [
       createLinkDecorator({
         entityType: config.entityType.LINK,
