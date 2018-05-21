@@ -210,7 +210,11 @@ const defaultConfig = {
     block: defaultBlockWhitelist,
   },
   entityType: ENTITY_TYPE,
+  customComponents: {},
 };
+
+defaultConfig.customComponents[CODE_BLOCK_TYPE] = true;
+defaultConfig.customComponents[CHECKABLE_LIST_ITEM] = true;
 
 const createMarkdownPlugin = (_config = {}) => {
   const store = {};
@@ -225,6 +229,10 @@ const createMarkdownPlugin = (_config = {}) => {
     entityType: {
       ...defaultConfig.entityType,
       ..._config.entityType,
+    },
+    customComponents: {
+      ...defaultConfig.customComponents,
+      ..._config.customComponents,
     },
   };
 
@@ -257,6 +265,10 @@ const createMarkdownPlugin = (_config = {}) => {
       block,
       { setReadOnly, setEditorState, getEditorState, getEditorRef }
     ) {
+      const blockType = block.getType();
+      if (!config.customComponents[blockType]) {
+        return null;
+      }
       switch (block.getType()) {
         case CHECKABLE_LIST_ITEM: {
           return {
